@@ -34,27 +34,36 @@ class TrainingRecords extends Controller
 
         $existingEmp = Employee::where('emp_id', $validatedData['emp_id'])->first();
 
-        if ($existingEmp) {
-            $existingEmp->emp_name = $validatedData['emp_name'];
-            
-            $existingEmp->training_hours += $validatedData['training_hours'];
-
-            $existingEmp->training_date = $validatedData['training_date'];
-            $existingEmp->expired_date = $validatedData['expired_date'];
-
-            if ($existingEmp->training_hours >= 40 && $existingEmp->trainer_emp == 'emp') {
-                $existingEmp->status = 'Complete';
-            }
-            elseif($existingEmp->trainer_emp == 'trainer' && $existingEmp->training_hours >= 8){
-                $existingEmp->status = 'Complete';
-            }
-
-            $existingEmp->save();
-
-            return redirect()->back()->with('success', 'Training record updated successfully.');
-        } else {
+        if (!$existingEmp) {
             return redirect()->back()->with('error', 'Employee not found.');
         }
+
+        // Update employee details
+        $existingEmp->fill([
+            'emp_name' => $validatedData['emp_name'],
+            'training_hours' => $existingEmp->training_hours + $validatedData['training_hours'],
+            'training_date' => $validatedData['training_date'],
+            'expired_date' => $validatedData['expired_date']
+        ]);
+
+        // Determine status based on training hours and trainer/employee type
+        if ($existingEmp->trainer_emp == 'emp') {
+            if ($existingEmp->training_hours >= 40) {
+                $existingEmp->status = 'Complete';
+            } else {
+                $existingEmp->status = 'Incomplete';
+            }
+        } elseif ($existingEmp->trainer_emp == 'trainer') {
+            if ($existingEmp->training_hours >= 8) {
+                $existingEmp->status = 'Complete';
+            } else {
+                $existingEmp->status = 'Incomplete';
+            }
+        }
+
+        $existingEmp->save();
+
+        return redirect()->back()->with('success', 'Training record updated successfully.');
     }
-    
+
 }
