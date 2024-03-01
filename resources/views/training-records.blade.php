@@ -3,7 +3,7 @@
 @section('page_header')
 <div class="container-fluid">
     <h1 class="page-title">
-        <i class="icon voyager-news"></i> Training Records
+        <i class="icon voyager-news"></i> Training Setup 
     </h1>
 </div>
 @stop
