@@ -217,6 +217,10 @@ return [
           'image/gif',
           'image/bmp',
           'video/mp4',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // For .xlsx
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // For .docx
+          'application/vnd.openxmlformats-officedocument.presentationml.presentation', // For .pptx
+          'application/pdf', // For .pdf    
         ],
         //Path for media-manager. Relative to the filesystem.
         'path'                => '/',
@@ -226,7 +230,7 @@ return [
         'allow_delete'        => true,
         'allow_create_folder' => true,
         'allow_rename'        => true,
-        /*'watermark'           => [
+        'watermark'           => [
             'source'         => 'watermark.png',
             'position'       => 'bottom-left',
             'x'              => 0,
@@ -240,6 +244,6 @@ return [
                 'width' => 500,
                 'height'=> 500
            ],
-       ]*/
+       ]
     ],
 ];
